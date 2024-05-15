@@ -1,0 +1,81 @@
+# yamllint disable rule:line-length
+---
+name: Slack Notifications
+on:
+  workflow_call:
+    inputs:
+      slackChannel:
+        type: string
+        description: Channel to post notifications
+        default: build
+        required: true
+
+jobs:
+ slack-notifications:
+  runs-on: ubuntu-latest
+  name: ${{ github.event.check_run.name }} Slack Notification
+  permissions:
+   id-token: write  # to authenticate via OIDC
+  if: >-
+      contains(fromJSON('["cirrus-ci", "sonarqube-next", "sonarcloud"]'), github.event.check_run.app.slug)
+      && ( contains(fromJSON('["main", "master"]'), github.event.check_run.check_suite.head_branch) || startsWith(github.event.check_run.check_suite.head_branch, 'dogfood-') || startsWith(github.event.check_run.check_suite.head_branch, 'branch-') )
+      && github.event.check_run.conclusion != 'success'
+      && github.event.check_run.conclusion != 'cancelled'
+      && github.event.check_run.conclusion != 'skipped'
+      && github.event.check_run.conclusion != 'neutral'
+  steps:
+   - name: Dump Event json
+     env:
+      GITHUB_CONTEXT: ${{ toJson(github.event.check_run) }}
+     run: echo "$GITHUB_CONTEXT"
+   - name: Vault Secrets
+     id: secrets
+     uses: SonarSource/vault-action-wrapper@d0877ce7085bc313bd7a7b99c4e4489d42fb40e1 # tag=3.0.0
+     with:
+      secrets: |
+       development/kv/data/slack webhook | slack_webhook;
+   - name: Send Slack notification on releasability check failure
+     uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
+     env:
+      SLACK_WEBHOOK_URL: ${{ fromJSON(steps.secrets.outputs.vault).slack_webhook }}
+      SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+     with:
+      payload: |
+        {
+           "channel":"${{ inputs.slackChannel }}",
+           "attachments":[
+              {
+                 "color":"#ee0000",
+                 "blocks":[
+                    {
+                       "type":"section",
+                       "text":{
+                          "type":"mrkdwn",
+                          "text":"*${{ github.event.check_run.app.name }}* - <${{ github.event.check_run.details_url }}|${{ github.event.check_run.name }}> ${{ github.event.check_run.conclusion }}  in *${{ github.repository }}*"
+                       }
+                    },
+                    {
+                       "type":"section",
+                       "text":{
+                          "type":"mrkdwn",
+                          "text":"Branch: *${{ github.event.check_run.check_suite.head_branch }}*\nCommit: *${{ github.event.check_run.head_sha }}*"
+                       }
+                    },
+                    {
+                       "type": "context",
+                       "elements": [
+                          {
+                            "type": "image",
+                            "image_url": "${{ github.event.check_run.app.owner.avatar_url }}",
+                            "alt_text": "Icon"
+                          },
+                          {
+                            "type": "mrkdwn",
+                            "text": "<${{ github.event.check_run.details_url }}|View more details>"
+                          }
+                       ]
+                    }
+                 ]
+              }
+           ]
+        }
