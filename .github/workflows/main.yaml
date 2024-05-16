@@ -24,17 +24,13 @@ jobs:
       && github.event.check_run.conclusion != 'skipped'
       && github.event.check_run.conclusion != 'neutral'
   steps:
-   - name: Dump Event json
-     env:
-      GITHUB_CONTEXT: ${{ toJson(github.event.check_run) }}
-     run: echo "$GITHUB_CONTEXT"
    - name: Vault Secrets
      id: secrets
      uses: SonarSource/vault-action-wrapper@d0877ce7085bc313bd7a7b99c4e4489d42fb40e1 # tag=3.0.0
      with:
       secrets: |
        development/kv/data/slack webhook | slack_webhook;
-   - name: Send Slack notification on releasability check failure
+   - name: Send Slack notification
      uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
      env:
       SLACK_WEBHOOK_URL: ${{ fromJSON(steps.secrets.outputs.vault).slack_webhook }}
