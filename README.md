@@ -1,7 +1,6 @@
 # SonarSource GitHub Action for Build failure notifications
 
-![GitHub Release](https://img.shields.io/github/v/release/SonarSource/gh-action_gh-action_build-notify)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SonarSource_gh-action_build-notify&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SonarSource_gh-action_build-notify)
+![GitHub Release](https://img.shields.io/github/v/release/SonarSource/gh-action_build-notify)
 
 Get notified for CircleCI/SonarCloud/SonarQube build failures on Slack.
 
