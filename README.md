@@ -55,7 +55,7 @@ jobs:
 
 > WARNING
 > This workflow has to be merged into the default branch before being able to be used.
-> There is a limitation (or a security feature) from GitHub. Workflows which are triggered based on check_run has to be merged to master
+> There is a limitation (or a security feature) from GitHub. Workflows which are triggered based on check_run has to be merged to default branch.
 
 ## Options
 
