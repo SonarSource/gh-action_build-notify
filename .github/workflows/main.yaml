@@ -17,7 +17,7 @@ jobs:
   permissions:
    id-token: write  # to authenticate via OIDC
   if: >-
-      contains(fromJSON('["cirrus-ci", "sonarqube-next", "sonarcloud"]'), github.event.check_run.app.slug)
+      contains(fromJSON('["cirrus-ci", "sonarqube-next", "sonarcloud", "azure-pipelines"]'), github.event.check_run.app.slug)
       && ( contains(fromJSON('["main", "master"]'), github.event.check_run.check_suite.head_branch) || startsWith(github.event.check_run.check_suite.head_branch, 'dogfood-') || startsWith(github.event.check_run.check_suite.head_branch, 'branch-') )
       && github.event.check_run.conclusion != 'success'
       && github.event.check_run.conclusion != 'cancelled'

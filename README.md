@@ -11,6 +11,7 @@ Notifications will be triggered upon build failures in any of the following plat
 * SonarCloud
 * SonarQube-Next
 * CirrusCI
+* Azure Pipelines
 
 ## Enabled branches
 
