@@ -54,6 +54,11 @@ jobs:
 
 ```
 
+> WARNING
+> This workflow has to be merged into the default branch before being able to be used.
+> There is a limitation (or a security feature) from GitHub. Workflows which are triggered
+> based on check_run have to be merged to the default branch.
+
 ## Options
 
 | Option name     | Description                                                        | Default                   |
