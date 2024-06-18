@@ -2,7 +2,7 @@
 
 ![GitHub Release](https://img.shields.io/github/v/release/SonarSource/gh-action_build-notify)
 
-Get notified for CircleCI/SonarCloud/SonarQube build failures on Slack.
+Get notified for CirrusCI/SonarCloud/SonarQube/AzureDevops build failures on Slack.
 
 ## Supported platforms
 
