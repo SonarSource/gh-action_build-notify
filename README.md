@@ -2,7 +2,7 @@
 
 ![GitHub Release](https://img.shields.io/github/v/release/SonarSource/gh-action_build-notify)
 
-Get notified for CirrusCI/SonarCloud/SonarQube/AzureDevops build failures on Slack.
+It sends Slack notifications for failed GitHub Checks reported by the Cirrus CI, SonarCloud, SonarQube, and AzureDevops apps.
 
 ## Supported platforms
 
