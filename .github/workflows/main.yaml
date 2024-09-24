@@ -9,16 +9,12 @@ on:
         description: Channel to post notifications
         default: build
         required: true
-      environment:
-        required: false
-        type: string
-        default: ''
 
 jobs:
  slack-notifications:
   runs-on: ubuntu-latest
   name: ${{ github.event.check_run.name }} Slack Notification
-  environment: ${{ inputs.environment }}
+  environment: slack
   permissions:
    id-token: write  # to authenticate via OIDC
   if: >-
