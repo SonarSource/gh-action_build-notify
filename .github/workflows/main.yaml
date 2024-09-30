@@ -24,6 +24,20 @@ jobs:
       && github.event.check_run.conclusion != 'skipped'
       && github.event.check_run.conclusion != 'neutral'
   steps:
+   - name: Extract and format username
+     id: extract
+     uses: actions/github-script@v4
+     with:
+          script: |
+            const actor = '${{ github.actor }}';
+            const regex = /(\w+)-(\w+)-(\w+)/;
+            const matches = actor.match(regex);
+            if (matches) {
+              const formattedUsername = `@${matches[1]} ${matches[2]}`;
+              return { formattedUsername };
+            } else {
+              return { formattedUsername: '' };
+            }
    - name: Vault Secrets
      id: secrets
      uses: SonarSource/vault-action-wrapper@3996073b47b49ac5c58c750d27ab4edf469401c8 # 3.0.1
@@ -54,7 +68,7 @@ jobs:
                        "type":"section",
                        "text":{
                           "type":"mrkdwn",
-                          "text":"Branch: *${{ github.event.check_run.check_suite.head_branch }}*\nCommit: *${{ github.event.check_run.head_sha }}*"
+                          "text":"Branch: *${{ github.event.check_run.check_suite.head_branch }}*\nCommit: *${{ github.event.check_run.head_sha }}*\nActor: <@${{ steps.extract.outputs.formattedUsername }}>"
                        }
                     },
                     {
