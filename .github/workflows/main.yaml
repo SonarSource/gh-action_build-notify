@@ -72,7 +72,7 @@ jobs:
                   core.exportVariable('user_id', '');
                 }
               } 
-              else 
+              else
               {
                 core.exportVariable('user_id', '');
               }
