@@ -6,12 +6,12 @@ on:
     inputs:
       slackChannel:
         type: string
-        description: Channel to post notifications
+        description: Name of the slack channel where the notifications are to be sent.
         default: build
         required: true
       environment:
         required: false
-        description: This property is required if the repository has an altered OIDC sub claim. Set it to 'slack' in this case.
+        description: Name of the GitHub Environment to use. Required if your repository uses GitHub Environments with a modified OIDC sub claim. Set to `slack` in this case.
         type: string
         default: ''
 

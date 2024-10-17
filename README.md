@@ -8,19 +8,19 @@ It sends Slack notifications for failed GitHub Checks reported by the Cirrus CI,
 
 Notifications will be triggered upon build failures in any of the following platforms
 
-* SonarCloud
-* SonarQube-Next
-* CirrusCI
-* Azure Pipelines
+- SonarCloud
+- SonarQube-Next
+- CirrusCI
+- Azure Pipelines
 
 ## Enabled branches
 
 Slack notifications will be enabled only for builds in the following branches
 
-* master
-* main
-* dogfood-*
-* branch-*
+- master
+- main
+- dogfood-\*
+- branch-\*
 
 ## Requirements
 
@@ -41,17 +41,16 @@ Create a new GitHub workflow:
 ---
 name: Slack Notifications
 on:
- check_run:
-  types: [rerequested, completed]
+  check_run:
+    types: [rerequested, completed]
 
 jobs:
- slack-notifications:
-  permissions:
-   id-token: write  # to authenticate via OIDC
-  uses: SonarSource/gh-action_build-notify/.github/workflows/main.yaml@v1
-  with:
-    slackChannel: <your_slack_channel>
-
+  slack-notifications:
+    permissions:
+      id-token: write # to authenticate via OIDC
+    uses: SonarSource/gh-action_build-notify/.github/workflows/main.yaml@v2
+    with:
+      slackChannel: <your_slack_channel>
 ```
 
 > WARNING
@@ -61,9 +60,10 @@ jobs:
 
 ## Options
 
-| Option name     | Description                                                        | Default                   |
-|-----------------|--------------------------------------------------------------------|---------------------------|
-| `slackChannel`   | Name of the slack channel where the notifications are to be sent | `build` |
+| Option name    | Description                                                                                                                                              | Default                 |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| `slackChannel` | Name of the slack channel where the notifications are to be sent.                                                                                         | `build`                 |
+| `environment`  | Name of the GitHub Environment to use. Required if your repository uses GitHub Environments with a modified OIDC sub claim. Set to `slack` in this case. | Do not use environments |
 
 ## Versioning
 
@@ -78,4 +78,4 @@ Branches prefixed with a `v` are pointers to the last major versions, ie: [`v1`]
 To create a new release,
 
 1. Draft a new release from Github releases page with the next semantic version.
-2. Run `scripts/updatevbranch.sh <tag>` with the release version tag to update the v* branch with the new tag.
+2. Run `scripts/updatevbranch.sh <tag>` with the release version tag to update the v\* branch with the new tag.
