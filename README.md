@@ -41,8 +41,8 @@ Create a new GitHub workflow:
 ---
 name: Slack Notifications
 on:
-  check_run:
-    types: [rerequested, completed]
+  check_suite:
+    types: [completed]
 
 jobs:
   slack-notifications:

@@ -29,6 +29,14 @@ jobs:
       && github.event.check_run.conclusion != 'cancelled'
       && github.event.check_run.conclusion != 'skipped'
       && github.event.check_run.conclusion != 'neutral'
+      ||
+      (github.event_name == 'check_suite' &&
+      contains(fromJSON('["cirrus-ci", "sonarqube-next", "sonarcloud", "azure-pipelines"]'), github.event.check_suite.app.slug)
+      && ( contains(fromJSON('["main", "master"]'), github.event.check_suite.head_branch) || startsWith(github.event.check_suite.head_branch, 'dogfood-') || startsWith(github.event.check_suite.head_branch, 'branch-') )
+      && github.event.check_suite.conclusion != 'success'
+      && github.event.check_suite.conclusion != 'cancelled'
+      && github.event.check_suite.conclusion != 'skipped'
+      && github.event.check_suite.conclusion != 'neutral')
   steps:
     - name: Vault Secrets
       id: secrets
