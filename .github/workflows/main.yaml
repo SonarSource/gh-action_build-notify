@@ -103,7 +103,6 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             /repos/${{ github.repository }}/check-suites/${{ github.event.check_suite.id }}/check-runs \
             | jq '.check_runs[] | select(.conclusion == "failure")' > failed_check_runs.json
-          cat failed_check_runs.json
 
           echo "Extract fields for check-run: $(jq -r '.name' failed_check_runs.json | head -n 1)"
 
@@ -125,49 +124,6 @@ jobs:
           echo "avatar_url=$avatar_url" >> $GITHUB_ENV
           echo "check_suite_id=$check_suite_id" >> $GITHUB_ENV
         fi
-
-    - name: Debug Slack Payload
-      run: |
-        echo "Payload:"
-        echo "check_suite_id: ${{ env.check_suite_id }}"
-        echo "{
-          \"channel\":\"${{ inputs.slackChannel }}\",
-          \"attachments\":[
-              {
-                \"color\":\"#ee0000\",
-                \"blocks\":[
-                    {
-                      \"type\":\"section\",
-                      \"text\":{
-                          \"type\":\"mrkdwn\",
-                          \"text\":\"*${{ env.app_name }}* - <${{ env.details_url }}|${{ env.run_name }}> ${{ env.conclusion }}  in *${{ github.repository }}*\"
-                      }
-                    },
-                    {
-                      \"type\":\"section\",
-                      \"text\":{
-                          \"type\":\"mrkdwn\",
-                          \"text\":\"Branch: *${{ env.head_branch }}*\nCommit: *${{ env.head_sha }}*\nActor: <@${{ env.user_id }}>\"
-                      }
-                    },
-                    {
-                      \"type\": \"context\",
-                      \"elements\": [
-                          {
-                            \"type\": \"image\",
-                            \"image_url\": \"${{ env.avatar_url }}\",
-                            \"alt_text\": \"Icon\"
-                          },
-                          {
-                            \"type\": \"mrkdwn\",
-                            \"text\": \"<${{ env.details_url }}|View more details>\"
-                          }
-                      ]
-                    }
-                ]
-              }
-          ]
-        }"
 
     - name: Send Slack notification
       uses: slackapi/slack-github-action@fcfb566f8b0aab22203f066d80ca1d7e4b5d05b3 # v1.27.1
