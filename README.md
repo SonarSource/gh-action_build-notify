@@ -47,6 +47,8 @@ on:
 jobs:
   slack-notifications:
     permissions:
+      contents: read
+      checks: read
       id-token: write # to authenticate via OIDC
     uses: SonarSource/gh-action_build-notify/.github/workflows/main.yaml@v2
     with:
