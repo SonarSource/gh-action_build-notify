@@ -98,12 +98,12 @@ jobs:
           echo "check_suite_id=${{ github.event.check_run.check_suite.id }}" >> $GITHUB_ENV
         else
           echo "Retrieving failed check runs for check suite ID: ${{ github.event.check_suite.id }}"
-          gh api \
+          gh api -X GET \
+            "repos/${{ github.repository }}/check-suites/${{ github.event.check_suite.id }}/check-runs?per_page=100&page=1" \
             -H "Accept: application/vnd.github+json" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            /repos/${{ github.repository }}/check-suites/${{ github.event.check_suite.id }}/check-runs \
-            | jq '.check_runs[] | select(.conclusion == "failure")' > failed_check_runs.json
-
+            --paginate | jq '.check_runs[] | select(.conclusion == "failure")' \
+            > failed_check_runs.json
           echo "Extract fields for check-run: $(jq -r '.name' failed_check_runs.json | head -n 1)"
 
           # Extract fields from the failed check run and set environment variables
