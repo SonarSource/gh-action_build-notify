@@ -1,4 +1,4 @@
-# This action is deprecated, please use https://github.com/SonarSource/gh-action_slack-notify
+# This action is deprecated, please use [this new action](https://github.com/SonarSource/gh-action_slack-notify)
 
 ## SonarSource GitHub Action for Build failure notifications
 
