@@ -1,4 +1,6 @@
-# SonarSource GitHub Action for Build failure notifications
+# This action is deprecated, please use https://github.com/SonarSource/gh-action_slack-notify
+
+## SonarSource GitHub Action for Build failure notifications
 
 ![GitHub Release](https://img.shields.io/github/v/release/SonarSource/gh-action_build-notify)
 
